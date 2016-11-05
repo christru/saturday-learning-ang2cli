@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { HackerNewsAPIService } from '../hackernews-api.service';
 
 @Component({
   selector: 'app-articles',
@@ -6,12 +8,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./articles.component.scss']
 })
 export class ArticlesComponent implements OnInit {
+  items;
 
-items: number[];
-  constructor() { 
-    this.items = Array(30);
-  }
+  constructor(private _hackerNewsAPIService: HackerNewsAPIService) { }
 
   ngOnInit() {
+    this._hackerNewsAPIService.fetchArticles()
+      .subscribe(
+      items => this.items = items,
+      error => console.log('Error fetching articles'));
   }
 }
